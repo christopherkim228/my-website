@@ -61,7 +61,9 @@ export default async function BlogPostPage({
         </nav>
       )}
 
-      <article>
+      <article className="prose prose-neutral max-w-none dark:prose-invert
+        prose-pre:rounded-xl prose-pre:p-4
+        prose-code:before:content-none prose-code:after:content-none">
         <MDXRemote
           source={content}
           options={{
