@@ -4,6 +4,7 @@ import remarkMdx from "remark-mdx";
 import { visit } from "unist-util-visit";
 import type { Root, Heading, Content } from "mdast";
 import type { Node } from "unist";
+import "server-only";
 
 export type TocItem = {
   depth: number;
