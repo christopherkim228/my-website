@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "github-slugger": "^2.0.0",
     "gray-matter": "^4.0.3",
     "katex": "^0.16.27",
     "next": "16.0.10",

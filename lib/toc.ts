@@ -1,10 +1,12 @@
+import "server-only";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
+import remarkMath from "remark-math";
 import remarkMdx from "remark-mdx";
 import { visit } from "unist-util-visit";
-import type { Root, Heading, Content } from "mdast";
+import type { Root, Heading, Text, InlineCode, Parent } from "mdast";
 import type { Node } from "unist";
-import "server-only";
+import GithubSlugger from "github-slugger";
 
 export type TocItem = {
   depth: number;
@@ -13,45 +15,45 @@ export type TocItem = {
 };
 
 function extractText(node: Node): string {
-  // mdast text node
-  if ("value" in node && typeof node.value === "string") {
-    return node.value;
-  }
+  switch (node.type) {
+    case "text":
+      return (node as Text).value;
 
-  // recurse through children
-  if ("children" in node && Array.isArray(node.children)) {
-    return node.children.map(extractText).join("");
-  }
+    case "inlineCode":
+      return (node as InlineCode).value;
 
-  return "";
+    default:
+      if (isParent(node)) {
+        return node.children.map(extractText).join("");
+      }
+      return "";
+  }
 }
 
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-");
+function isParent(node: Node): node is Parent {
+  return Array.isArray((node as Parent).children);
 }
 
 export function extractToc(source: string): TocItem[] {
   const tree = unified()
     .use(remarkParse)
+    .use(remarkMath) 
     .use(remarkMdx)
     .parse(source) as Root;
 
   const toc: TocItem[] = [];
+  const slugger = new GithubSlugger();
 
   visit(tree, "heading", (node: Heading) => {
     if (node.depth < 2 || node.depth > 4) return;
 
-    const text = extractText(node);
+    const text = extractText(node).trim();
     if (!text) return;
 
     toc.push({
       depth: node.depth,
       value: text,
-      id: slugify(text),
+      id: slugger.slug(text),
     });
   });
 

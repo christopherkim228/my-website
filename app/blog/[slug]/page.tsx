@@ -73,11 +73,8 @@ export default async function BlogPostPage({
         <nav style={{ marginBottom: "2rem" }}>
           <h2 style={{ fontSize: "1rem", opacity: 0.7 }}>Contents</h2>
           <ul>
-            {toc.map((item) => (
-              <li
-                key={item.id}
-                style={{ marginLeft: (item.depth - 2) * 16 }}
-              >
+            {toc.map((item, i) => (
+              <li key={`${item.id}-${i}`} style={{ marginLeft: (item.depth - 2) * 16 }}>
                 <a href={`#${item.id}`}>{item.value}</a>
               </li>
             ))}
