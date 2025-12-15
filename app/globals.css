@@ -58,3 +58,11 @@ h3:hover .heading-anchor,
 h4:hover .heading-anchor {
   opacity: 1;
 }
+
+/* Remove the default disclosure triangle styling differences across browsers */
+details > summary {
+  list-style: none;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}

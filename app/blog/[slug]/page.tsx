@@ -9,6 +9,9 @@ import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { extractToc } from "@/lib/toc";
+import Theorem from "@/components/mdx/Theorem";
+import Proof from "@/components/mdx/Proof";
+
 
 
 const prettyCodeOptions = {
@@ -87,6 +90,7 @@ export default async function BlogPostPage({
         prose-code:before:content-none prose-code:after:content-none">
         <MDXRemote
           source={content}
+          components={{ Theorem, Proof }}
           options={{
             mdxOptions: {
               remarkPlugins: [remarkMath],
