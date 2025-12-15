@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPostSlugs, getPostSource } from "@/lib/posts";
 
@@ -37,12 +38,35 @@ export default async function BlogPostPage({
 
   const toc = extractToc(content);
 
+  const tags = frontmatter.tags ?? [];
+
   return (
     <main style={{ maxWidth: 800, margin: "0 auto", padding: "2rem 1rem" }}>
       <h1>{frontmatter.title}</h1>
-      <div style={{ opacity: 0.7, marginBottom: "1.5rem" }}>
+      <div className="mt-2 text-sm opacity-70">
         {frontmatter.date}
-        {frontmatter.tags?.length ? ` · ${frontmatter.tags.join(", ")}` : ""}
+        {tags?.length ? (
+          <>
+            {" · "}
+            {tags.map((t, i) => (
+              <span key={t}>
+                <a className="hover:underline" href={`/tags/${encodeURIComponent(t)}`}>
+                  {t}
+                </a>
+                {i < tags.length - 1 ? ", " : ""}
+              </span>
+            ))}
+          </>
+        ) : null}
+      </div>
+
+      <div className="mb-6">
+        <Link
+          href="/blog"
+          className="inline-flex items-center gap-1 text-sm opacity-70 hover:opacity-100 hover:underline"
+        >
+          ← Back to Blog
+        </Link>
       </div>
 
       {toc.length > 0 && (
@@ -92,6 +116,14 @@ export default async function BlogPostPage({
           }}
         />
       </article>
+      <div className="mt-12 border-t pt-6">
+        <Link
+          href="/blog"
+          className="text-sm opacity-70 hover:opacity-100 hover:underline"
+        >
+          ← Back to Blog
+        </Link>
+      </div>
     </main>
   );
 }
