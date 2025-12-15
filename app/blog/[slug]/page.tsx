@@ -5,6 +5,10 @@ import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import { extractToc } from "@/lib/toc";
+
 
 const prettyCodeOptions = {
   theme: "material-theme-darker",
@@ -31,6 +35,8 @@ export default async function BlogPostPage({
 
   const { frontmatter, content } = post;
 
+  const toc = extractToc(content);
+
   return (
     <main style={{ maxWidth: 800, margin: "0 auto", padding: "2rem 1rem" }}>
       <h1>{frontmatter.title}</h1>
@@ -38,6 +44,22 @@ export default async function BlogPostPage({
         {frontmatter.date}
         {frontmatter.tags?.length ? ` · ${frontmatter.tags.join(", ")}` : ""}
       </div>
+
+      {toc.length > 0 && (
+        <nav style={{ marginBottom: "2rem" }}>
+          <h2 style={{ fontSize: "1rem", opacity: 0.7 }}>Contents</h2>
+          <ul>
+            {toc.map((item) => (
+              <li
+                key={item.id}
+                style={{ marginLeft: (item.depth - 2) * 16 }}
+              >
+                <a href={`#${item.id}`}>{item.value}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
 
       <article>
         <MDXRemote
@@ -48,6 +70,21 @@ export default async function BlogPostPage({
               rehypePlugins: [
                 rehypeKatex,
                 [rehypePrettyCode, prettyCodeOptions],
+                rehypeSlug,
+                [
+                  rehypeAutolinkHeadings,
+                  {
+                    behavior: "append",
+                    content: {
+                      type: "text",
+                      value: "#",
+                    },
+                    properties: {
+                      className: ["heading-anchor"],
+                      ariaLabel: "Link to section",
+                    },
+                  },
+                ],
               ],
             },
           }}
