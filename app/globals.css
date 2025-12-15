@@ -24,3 +24,22 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Code block base styling for rehype-pretty-code */
+pre {
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: 0.75rem;
+}
+
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  font-size: 0.95em;
+}
+
+/* Optional: inline code */
+p code {
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.35rem;
+}

@@ -4,6 +4,12 @@ import { getPostSlugs, getPostSource } from "@/lib/posts";
 import remarkMath from "remark-math";
 import rehypeKatex from "rehype-katex";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import rehypePrettyCode from "rehype-pretty-code";
+
+const prettyCodeOptions = {
+  theme: "material-theme-darker",
+  keepBackground: false,
+};
 
 export function generateStaticParams() {
   return getPostSlugs().map((slug) => ({ slug }));
@@ -39,7 +45,10 @@ export default async function BlogPostPage({
           options={{
             mdxOptions: {
               remarkPlugins: [remarkMath],
-              rehypePlugins: [rehypeKatex],
+              rehypePlugins: [
+                rehypeKatex,
+                [rehypePrettyCode, prettyCodeOptions],
+              ],
             },
           }}
         />
