@@ -66,3 +66,8 @@ details > summary {
 details > summary::-webkit-details-marker {
   display: none;
 }
+
+/* TOC anchor jumps shouldn't hide headings under any top spacing */
+.prose :is(h1,h2,h3,h4,h5,h6) {
+  scroll-margin-top: 96px;
+}

@@ -11,6 +11,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import { extractToc } from "@/lib/toc";
 import Theorem from "@/components/mdx/Theorem";
 import Proof from "@/components/mdx/Proof";
+import Toc from "@/components/mdx/Toc";
 
 
 
@@ -44,7 +45,7 @@ export default async function BlogPostPage({
   const tags = frontmatter.tags ?? [];
 
   return (
-    <main style={{ maxWidth: 800, margin: "0 auto", padding: "2rem 1rem" }}>
+    <main className="mx-auto max-w-6xl px-4 py-10" style={{ margin: "0 auto", padding: "2rem 1rem" }}>
       <h1>{frontmatter.title}</h1>
       <div className="mt-2 text-sm opacity-70">
         {frontmatter.date}
@@ -71,52 +72,61 @@ export default async function BlogPostPage({
           ← Back to Blog
         </Link>
       </div>
+      
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[260px_minmax(0,1fr)]">
+        {/* TOC desktop */}
+        <aside className="hidden lg:block">
+          <div className="sticky top-6 rounded-2xl border border-black/10 p-4 dark:border-white/10">
+            <Toc items={toc} />
+          </div>
+        </aside>
 
-      {toc.length > 0 && (
-        <nav style={{ marginBottom: "2rem" }}>
-          <h2 style={{ fontSize: "1rem", opacity: 0.7 }}>Contents</h2>
-          <ul>
-            {toc.map((item, i) => (
-              <li key={`${item.id}-${i}`} style={{ marginLeft: (item.depth - 2) * 16 }}>
-                <a href={`#${item.id}`}>{item.value}</a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      )}
-
-      <article className="prose prose-neutral max-w-none dark:prose-invert
-        prose-pre:rounded-xl prose-pre:p-4
-        prose-code:before:content-none prose-code:after:content-none">
-        <MDXRemote
-          source={content}
-          components={{ Theorem, Proof }}
-          options={{
-            mdxOptions: {
-              remarkPlugins: [remarkMath],
-              rehypePlugins: [
-                rehypeKatex,
-                [rehypePrettyCode, prettyCodeOptions],
-                rehypeSlug,
-                [
-                  rehypeAutolinkHeadings,
-                  {
-                    behavior: "append",
-                    content: {
-                      type: "text",
-                      value: "#",
-                    },
-                    properties: {
-                      className: ["heading-anchor"],
-                      ariaLabel: "Link to section",
-                    },
-                  },
-                ],
-              ],
-            },
-          }}
-        />
-      </article>
+        <div>
+          {/* TOC mobile */}
+          <div className="lg:hidden">
+            <details className="mb-8 rounded-2xl border border-black/10 p-4 dark:border-white/10">
+              <summary className="cursor-pointer select-none text-sm font-semibold">
+                Contents
+              </summary>
+              <div className="mt-3">
+                <Toc items={toc} />
+              </div>
+            </details>
+          </div>
+          <article className="prose  pprose-neutral max-w-none dark:prose-invert
+            prose-pre:rounded-xl prose-pre:p-4
+            prose-code:before:content-none prose-code:after:content-none">
+            <MDXRemote
+              source={content}
+              components={{ Theorem, Proof }}
+              options={{
+                mdxOptions: {
+                  remarkPlugins: [remarkMath],
+                  rehypePlugins: [
+                    rehypeKatex,
+                    [rehypePrettyCode, prettyCodeOptions],
+                    rehypeSlug,
+                    [
+                      rehypeAutolinkHeadings,
+                      {
+                        behavior: "append",
+                        content: {
+                          type: "text",
+                          value: "#",
+                        },
+                        properties: {
+                          className: ["heading-anchor"],
+                          ariaLabel: "Link to section",
+                        },
+                      },
+                    ],
+                  ],
+                },
+              }}
+              />
+          </article>
+        </div>
+      </div>
       <div className="mt-12 border-t pt-6">
         <Link
           href="/blog"
