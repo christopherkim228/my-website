@@ -46,23 +46,30 @@ export default async function BlogPostPage({
 
   return (
     <main className="mx-auto max-w-6xl px-4 py-10" style={{ margin: "0 auto", padding: "2rem 1rem" }}>
-      <h1>{frontmatter.title}</h1>
-      <div className="mt-2 text-sm opacity-70">
-        {frontmatter.date}
-        {tags?.length ? (
-          <>
-            {" · "}
-            {tags.map((t, i) => (
-              <span key={t}>
-                <a className="hover:underline" href={`/tags/${encodeURIComponent(t)}`}>
+      <header className="mb-10">
+        <h1 className="text-4xl font-semibold tracking-tight leading-tight">
+          {frontmatter.title}
+        </h1>
+
+        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm opacity-70">
+          <time>{frontmatter.date}</time>
+
+          {tags.length > 0 && (
+            <>
+              <span>·</span>
+              {tags.map((t) => (
+                <a
+                  key={t}
+                  href={`/tags/${encodeURIComponent(t)}`}
+                  className="hover:underline"
+                >
                   {t}
                 </a>
-                {i < tags.length - 1 ? ", " : ""}
-              </span>
-            ))}
-          </>
-        ) : null}
-      </div>
+              ))}
+            </>
+          )}
+        </div>
+      </header>
 
       <div className="mb-6">
         <Link
