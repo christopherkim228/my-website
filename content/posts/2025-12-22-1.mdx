@@ -1,0 +1,104 @@
+---
+title: "Chapter 1 - Preliminaries"
+date: "2025-12-22"
+tags: ["Math", "Number Theory", "Burton", "Study"]
+description: "Elementary Number Theory, David M. Burton, Chapter 1"
+---
+
+## 1.1 Mathematical Induction
+<Theorem title="Well-Ordering Principle">
+Every nonempty set $S$ of nonnegative integers contains a least element; that is, there is some integer $a$ in $S$ such that $a <= b$ for all $b$s belonging to $S$.
+</Theorem>
+
+<Theorem title="Theorem 1.1 Archimedean Property">
+If $a$ and $b$ are any positive integers, then there exists a positive integer $n$ such that $na >= b$.
+</Theorem>
+
+<Proof title="Proof to Theorem 1.1">
+Assume $\exist a, b \in \mathbb{N} \ \text{s.t.} \ na < b$.  
+Then, $S=\{b-na \mid n \in \mathbb{N}\}$ has a least element, $b-ma$, by the Well-Ordering Principle.  
+However, $b-(m+1)a < S$, and $b-(m+1)a = b - ma - m < b - ma$, so $b-ma$ is not the least element fo $S$. Since a contradiction arises, original statement is true.
+</Proof>
+
+<Theorem title="Theorem 1.2 First Principle of Finite Induction">
+Let $S$ be a set of positive integers with the following properties:  
+
+(a) The integer 1 belongs to $S$.  
+(b) Whenever the integer $k$ is in $S$, the next integer $k+1$ must also be in $S$.  
+
+Then $S$ is the set of all positive integers.
+</Theorem>
+
+<Proof title="Proof to Theorem 1.2">
+Proof by contradiction. Let $T$ be the set of all positive integers not in $S$, and assume that $T$ is nonempty. By the Well-Ordering Principle, there must be a least element $m$ to this set. By (a), $m > 1$, so $0 < m - 1 < m$. Because $m-1$ is a positive integer and is not in $T$, it must be in $S$. But by (b), $(m-1)+1=m$ must be in $S$. This leads to a contradiction. Therefore, the original statement is true.
+</Proof>
+
+**Remark** When giving induction proofs, we usually eliminate all references to the set $S$, and simply show that results holds for $1$, and if true for $k$, then also true for $k+1$.  
+
+When doing induction proofs, (a) is usually called the **basis step**, and (b) is called the **induction step**.  
+
+<Theorem title="Second Principle of Finite Induction">
+Let $S$ be a set of positive integers with the following properties:  
+
+(a) The integer 1 belongs to $S$.  
+(b') If $k$ is a positive integer such that 1, 2, ... $k$ belong to $S$, then $k+1$ must also be in $S$.
+
+Then $S$ is the set of all positive integers.
+</Theorem>
+
+<Proof title="Proof to the Second Principle of Finite Induction">
+Proof by contradiction. Let $T$ be the set of all positive integers not in $S$, and assume that $T$ is nonempty. By the Well-Ordering Principle, there must be a least element $m$ to this set. By (a), $m > 1$, so 1, 2, ..., $m-1$ all lie in S. But by (b), $(m-1)+1=m$ must be in $S$. This leads to a contradiction. Therefore, the original statement is true.
+</Proof>
+
+## 1.2 Binomial Theorem
+**Binomial Coefficients** - $\binom{n}{k}$
+$$
+\binom{n}{k} = \frac{n!}{k!(n-k)!} = \frac{n(n-1)\cdots(n-k+1)}{k!}
+$$
+
+**Pascal's Rule**
+$$
+\binom{n}{k} + \binom{n}{k-1} = \binom{n+1}{k}
+$$
+
+**Pascal's Triangle**
+$$
+\begin{array}{ccccccccccccccc}
+&&&&& 1 && 1 \\
+&&&& 1 && 2 && 1 \\
+&&& 1 && 3 && 3 && 1 \\
+&& 1 && 4 && 6 && 4 && 1 \\
+& 1 && 5 && 10 && 10 && 5 && 1 \\
+1 && 6 && 15 && 20 && 15 && 6 && 1 \\
+&&&&&& \vdots
+\end{array}
+$$
+
+<Theorem title="Binomial Theorem">
+$$
+(a+b)^n=\sum_{k=0}^{n}{\binom{n}{k}a^{n-k}b^k}
+$$
+</Theorem>
+
+<Proof title="Proof to Binomial Theorem">
+Proof by induction.  
+Basis step: $n=1$
+$$
+(a+b)^1 = \sum^{1}_{k=0}{a^{1-k}b^k}=\binom10a^1b^0+\binom11a^0b^1=a+b
+$$
+
+Induction step: Assume formula holds for $m$. For $m+1$
+$$
+(a+b)^{m+1}=a(a+b)^m+b(a+b)^m \\
+\begin{align*}
+a(a+b)^m&=\sum^{m}_{k=0}{\binom{m}{k}a^{m-k+1}b^k} \\
+&= a^{m+1} + \sum^{m}_{k=1}{\binom{m}{k}a^{m+1-k}b^k} \\
+b(a+b)^m&=\sum^{m}_{j=0}{\binom{m}{j}a^{m-j}b^{j+1}} \\
+&= \sum^{m}_{k=1}{\binom{m}{k-1}a^{m+1-k}b^k + b^{m+1}}
+\end{align*} \\
+\begin{align*}
+(a+b)^{m+1}&=a^{m+1} + \sum^{m}_{k=1}{\left[\binom{m}{k}+\binom{m}{k-1}\right]a^{m+1-k}b^k} + b^{m+1} \\
+&=\sum^{m+1}_{k=0}{\binom{m+1}{k}a^{m+1-k}b^k}
+\end{align*}
+$$
+</Proof>
