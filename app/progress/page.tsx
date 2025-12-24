@@ -191,6 +191,8 @@ export default function ProgressPage() {
   const todos = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   const [newTodoTitle, setNewTodoTitle] = useState('');
+
+  // Reset modal state
   const [showResetDialog, setShowResetDialog] = useState(false);
   const [resetText, setResetText] = useState('');
 
@@ -288,6 +290,7 @@ export default function ProgressPage() {
           >
             Export
           </button>
+
           <button
             type="button"
             onClick={() => {
@@ -301,6 +304,7 @@ export default function ProgressPage() {
               background: 'white',
               cursor: 'pointer',
             }}
+            title="Reset all progress"
           >
             Reset
           </button>
@@ -357,6 +361,7 @@ export default function ProgressPage() {
         Tip: progress is computed by <code>sum(done weights) / sum(all weights)</code>.
       </p>
 
+      {/* RESET CONFIRM MODAL (type RESET) */}
       {showResetDialog && (
         <div
           role="dialog"
@@ -468,6 +473,8 @@ function TodoCard({
   const totalW = todo.subtasks.reduce((a, s) => a + safeWeight(s.weight), 0);
   const doneW = todo.subtasks.filter(s => s.done).reduce((a, s) => a + safeWeight(s.weight), 0);
 
+  const [collapsed, setCollapsed] = useState(false);
+
   const [newSub, setNewSub] = useState('');
   const [newWeight, setNewWeight] = useState('1');
 
@@ -488,10 +495,30 @@ function TodoCard({
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <button
+          type="button"
+          onClick={() => setCollapsed(c => !c)}
+          style={{
+            borderRadius: 10,
+            border: '1px solid rgba(0,0,0,0.15)',
+            background: 'white',
+            padding: '6px 10px',
+            cursor: 'pointer',
+            minWidth: 40,
+          }}
+          aria-expanded={!collapsed}
+          aria-label={collapsed ? `Expand ${todo.title}` : `Collapse ${todo.title}`}
+          title={collapsed ? 'Expand' : 'Collapse'}
+        >
+          {collapsed ? '▸' : '▾'}
+        </button>
+
         <h2 style={{ fontSize: 18, margin: 0, flex: 1 }}>{todo.title}</h2>
+
         <span style={{ opacity: 0.75, fontSize: 14 }}>
           {pct}% (done {doneW}/{totalW})
         </span>
+
         <button
           onClick={onRemoveTodo}
           style={{
@@ -512,110 +539,114 @@ function TodoCard({
         <ProgressBar pct={pct} />
       </div>
 
-      {/* Add subtask with weight */}
-      <form onSubmit={submitSub} style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
-        <input
-          value={newSub}
-          onChange={e => setNewSub(e.target.value)}
-          placeholder="Add a subtask…"
-          style={{
-            flex: 1,
-            padding: '9px 12px',
-            borderRadius: 10,
-            border: '1px solid rgba(0,0,0,0.2)',
-          }}
-        />
-
-        <input
-          value={newWeight}
-          onChange={e => setNewWeight(e.target.value)}
-          inputMode="decimal"
-          placeholder="Weight"
-          style={{
-            width: 110,
-            padding: '9px 10px',
-            borderRadius: 10,
-            border: '1px solid rgba(0,0,0,0.2)',
-          }}
-          aria-label="Subtask weight"
-          title="Subtask weight"
-        />
-
-        <button
-          type="submit"
-          style={{
-            padding: '9px 12px',
-            borderRadius: 10,
-            border: '1px solid rgba(0,0,0,0.2)',
-            background: 'white',
-            cursor: 'pointer',
-          }}
-        >
-          Add
-        </button>
-      </form>
-
-      {/* Subtasks */}
-      {todo.subtasks.length === 0 ? (
-        <p style={{ margin: 0, opacity: 0.65 }}>No subtasks yet.</p>
-      ) : (
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 8 }}>
-          {todo.subtasks.map(s => (
-            <li
-              key={s.id}
+      {!collapsed && (
+        <>
+          {/* Add subtask with weight */}
+          <form onSubmit={submitSub} style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
+            <input
+              value={newSub}
+              onChange={e => setNewSub(e.target.value)}
+              placeholder="Add a subtask…"
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 10,
-                padding: '10px 10px',
-                borderRadius: 12,
-                border: '1px solid rgba(0,0,0,0.10)',
+                flex: 1,
+                padding: '9px 12px',
+                borderRadius: 10,
+                border: '1px solid rgba(0,0,0,0.2)',
+              }}
+            />
+
+            <input
+              value={newWeight}
+              onChange={e => setNewWeight(e.target.value)}
+              inputMode="decimal"
+              placeholder="Weight"
+              style={{
+                width: 110,
+                padding: '9px 10px',
+                borderRadius: 10,
+                border: '1px solid rgba(0,0,0,0.2)',
+              }}
+              aria-label="Subtask weight"
+              title="Subtask weight"
+            />
+
+            <button
+              type="submit"
+              style={{
+                padding: '9px 12px',
+                borderRadius: 10,
+                border: '1px solid rgba(0,0,0,0.2)',
+                background: 'white',
+                cursor: 'pointer',
               }}
             >
-              <input type="checkbox" checked={s.done} onChange={() => onToggleSubtask(s.id)} />
+              Add
+            </button>
+          </form>
 
-              <span
-                style={{
-                  flex: 1,
-                  textDecoration: s.done ? 'line-through' : 'none',
-                  opacity: s.done ? 0.6 : 1,
-                }}
-              >
-                {s.text}
-              </span>
+          {/* Subtasks */}
+          {todo.subtasks.length === 0 ? (
+            <p style={{ margin: 0, opacity: 0.65 }}>No subtasks yet.</p>
+          ) : (
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: 8 }}>
+              {todo.subtasks.map(s => (
+                <li
+                  key={s.id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 10,
+                    padding: '10px 10px',
+                    borderRadius: 12,
+                    border: '1px solid rgba(0,0,0,0.10)',
+                  }}
+                >
+                  <input type="checkbox" checked={s.done} onChange={() => onToggleSubtask(s.id)} />
 
-              {/* Edit weight */}
-              <input
-                value={String(s.weight)}
-                onChange={e => onSetSubtaskWeight(s.id, Number(e.target.value))}
-                inputMode="decimal"
-                style={{
-                  width: 90,
-                  padding: '6px 8px',
-                  borderRadius: 10,
-                  border: '1px solid rgba(0,0,0,0.2)',
-                }}
-                aria-label={`Weight for ${s.text}`}
-                title="Weight"
-              />
+                  <span
+                    style={{
+                      flex: 1,
+                      textDecoration: s.done ? 'line-through' : 'none',
+                      opacity: s.done ? 0.6 : 1,
+                    }}
+                  >
+                    {s.text}
+                  </span>
 
-              <button
-                onClick={() => onRemoveSubtask(s.id)}
-                style={{
-                  borderRadius: 10,
-                  border: '1px solid rgba(0,0,0,0.15)',
-                  background: 'white',
-                  padding: '6px 10px',
-                  cursor: 'pointer',
-                }}
-                aria-label={`Remove subtask ${s.text}`}
-                title="Remove subtask"
-              >
-                ✕
-              </button>
-            </li>
-          ))}
-        </ul>
+                  {/* Edit weight */}
+                  <input
+                    value={String(s.weight)}
+                    onChange={e => onSetSubtaskWeight(s.id, Number(e.target.value))}
+                    inputMode="decimal"
+                    style={{
+                      width: 90,
+                      padding: '6px 8px',
+                      borderRadius: 10,
+                      border: '1px solid rgba(0,0,0,0.2)',
+                    }}
+                    aria-label={`Weight for ${s.text}`}
+                    title="Weight"
+                  />
+
+                  <button
+                    onClick={() => onRemoveSubtask(s.id)}
+                    style={{
+                      borderRadius: 10,
+                      border: '1px solid rgba(0,0,0,0.15)',
+                      background: 'white',
+                      padding: '6px 10px',
+                      cursor: 'pointer',
+                    }}
+                    aria-label={`Remove subtask ${s.text}`}
+                    title="Remove subtask"
+                  >
+                    ✕
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
       )}
     </section>
   );
