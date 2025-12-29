@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className="bg-white text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100 transition-colors duration-200">
+      <body className="min-h-dvh bg-white text-zinc-900 dark:bg-zinc-900 dark:text-zinc-100">
         <ThemeProvider>
           <SiteNav />
           {children}

@@ -19,11 +19,13 @@ export default function SiteNav() {
 
   return (
     <nav
-      className="w-full border-b backdrop-blur
-                 bg-white/80 dark:bg-zinc-900/80
-                 border-zinc-200 dark:border-zinc-800
-                 text-zinc-900 dark:text-zinc-100"
+      className="w-full border-b
+                bg-white/80 dark:bg-zinc-900/80
+                border-zinc-200 dark:border-zinc-800
+                text-zinc-900 dark:text-zinc-100"
     >
+
+
       <div className="mx-auto max-w-5xl px-4 py-3 flex items-center gap-2">
         <Link href="/" className="mr-3 font-semibold">
           My Website
@@ -37,7 +39,7 @@ export default function SiteNav() {
                 key={it.href}
                 href={it.href}
                 className={[
-                  'px-3 py-1.5 rounded-md text-sm transition-colors',
+                  'px-3 py-1.5 rounded-md text-sm',
                   active
                     ? 'bg-zinc-100 dark:bg-zinc-800 font-medium'
                     : 'hover:bg-zinc-100 dark:hover:bg-zinc-800',
