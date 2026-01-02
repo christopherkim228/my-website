@@ -42,7 +42,6 @@ let cachedSnapshot: Todo[] = [];
 let cachedRaw: string | null = null;
 
 function readAndCache(): Todo[] {
-  // On server, return the cached value (stable ref)
   if (typeof window === 'undefined') return cachedSnapshot;
 
   const raw = localStorage.getItem(STORAGE_KEY);
@@ -97,19 +96,17 @@ function getServerSnapshot(): Todo[] {
   return SERVER_SNAPSHOT;
 }
 
+function setAllTodos(next: Todo[]) {
+  saveTodos(next);
+  cachedSnapshot = next;
+  cachedRaw = JSON.stringify(next);
+  notifySameTab();
+}
+
 function updateTodos(updater: (prev: Todo[]) => Todo[]) {
   const prev = readAndCache();
   const next = updater(prev);
-
-  // Persist
-  saveTodos(next);
-
-  // Update cache to match what we just stored
-  cachedSnapshot = next;
-  cachedRaw = JSON.stringify(next);
-
-  // Trigger re-render in this tab
-  notifySameTab();
+  setAllTodos(next);
 }
 
 function resetTodos() {
@@ -140,9 +137,7 @@ function safeWeight(w: number) {
 function weightedPct(subtasks: Subtask[]) {
   const total = subtasks.reduce((acc, s) => acc + safeWeight(s.weight), 0);
   if (total <= 0) return 0;
-  const done = subtasks
-    .filter(s => s.done)
-    .reduce((acc, s) => acc + safeWeight(s.weight), 0);
+  const done = subtasks.filter(s => s.done).reduce((acc, s) => acc + safeWeight(s.weight), 0);
   return Math.round((done / total) * 100);
 }
 
@@ -171,6 +166,8 @@ function ProgressBar({ pct }: { pct: number }) {
   );
 }
 
+/** ---------- import/export ---------- */
+
 function exportTodos(todos: Todo[]) {
   const json = JSON.stringify(todos, null, 2);
   const blob = new Blob([json], { type: 'application/json' });
@@ -184,17 +181,63 @@ function exportTodos(todos: Todo[]) {
   URL.revokeObjectURL(url);
 }
 
+function sanitizeImportedTodos(parsed: unknown): Todo[] | null {
+  if (!Array.isArray(parsed)) return null;
+
+  const arr = parsed as Array<Record<string, unknown>>;
+
+  const cleaned: Todo[] = arr.map(t => {
+    const subtasksRaw = (t.subtasks as unknown) ?? [];
+    const subtasksArr = Array.isArray(subtasksRaw) ? (subtasksRaw as Array<Record<string, unknown>>) : [];
+
+    const subtasks: Subtask[] = subtasksArr.map(s => ({
+      id: typeof s.id === 'string' ? s.id : crypto.randomUUID(),
+      text: typeof s.text === 'string' ? s.text : '',
+      done: Boolean(s.done),
+      weight: Number.isFinite(Number(s.weight)) ? Math.max(0, Number(s.weight)) : 1,
+    }));
+
+    return {
+      id: typeof t.id === 'string' ? t.id : crypto.randomUUID(),
+      title: typeof t.title === 'string' ? t.title : 'Untitled',
+      subtasks,
+    };
+  });
+
+  return cleaned;
+}
+
+function importTodosFromJsonText(text: string) {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    alert('Invalid JSON file.');
+    return;
+  }
+
+  const cleaned = sanitizeImportedTodos(parsed);
+  if (!cleaned) {
+    alert('JSON must be an array of todos (same format as Export).');
+    return;
+  }
+
+  setAllTodos(cleaned);
+}
+
 /** ---------- page ---------- */
 
 export default function ProgressPage() {
-  // Read todos from localStorage as an external store (cached snapshots)
   const todos = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   const [newTodoTitle, setNewTodoTitle] = useState('');
 
-  // Reset modal state
+  // Reset modal (type RESET)
   const [showResetDialog, setShowResetDialog] = useState(false);
   const [resetText, setResetText] = useState('');
+
+  // Import state (just for button text)
+  const [isImporting, setIsImporting] = useState(false);
 
   const overallPct = useMemo(() => {
     const all = todos.flatMap(t => t.subtasks);
@@ -225,10 +268,7 @@ export default function ProgressPage() {
         t.id === todoId
           ? {
               ...t,
-              subtasks: [
-                { id: crypto.randomUUID(), text: trimmed, done: false, weight: w },
-                ...t.subtasks,
-              ],
+              subtasks: [{ id: crypto.randomUUID(), text: trimmed, done: false, weight: w }, ...t.subtasks],
             }
           : t
       )
@@ -239,10 +279,7 @@ export default function ProgressPage() {
     updateTodos(prev =>
       prev.map(t =>
         t.id === todoId
-          ? {
-              ...t,
-              subtasks: t.subtasks.map(s => (s.id === subId ? { ...s, done: !s.done } : s)),
-            }
+          ? { ...t, subtasks: t.subtasks.map(s => (s.id === subId ? { ...s, done: !s.done } : s)) }
           : t
       )
     );
@@ -250,9 +287,7 @@ export default function ProgressPage() {
 
   function removeSubtask(todoId: string, subId: string) {
     updateTodos(prev =>
-      prev.map(t =>
-        t.id === todoId ? { ...t, subtasks: t.subtasks.filter(s => s.id !== subId) } : t
-      )
+      prev.map(t => (t.id === todoId ? { ...t, subtasks: t.subtasks.filter(s => s.id !== subId) } : t))
     );
   }
 
@@ -260,12 +295,7 @@ export default function ProgressPage() {
     const w = safeWeight(weight);
     updateTodos(prev =>
       prev.map(t =>
-        t.id === todoId
-          ? {
-              ...t,
-              subtasks: t.subtasks.map(s => (s.id === subId ? { ...s, weight: w } : s)),
-            }
-          : t
+        t.id === todoId ? { ...t, subtasks: t.subtasks.map(s => (s.id === subId ? { ...s, weight: w } : s)) } : t
       )
     );
   }
@@ -275,7 +305,45 @@ export default function ProgressPage() {
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 6 }}>
         <h1 style={{ fontSize: 32, margin: 0 }}>Progress</h1>
 
+        {/* Hidden file input for Import */}
+        <input
+          type="file"
+          accept="application/json"
+          id="import-progress-json"
+          style={{ display: 'none' }}
+          onChange={async e => {
+            const file = e.target.files?.[0];
+            e.target.value = ''; // allow re-uploading same file
+            if (!file) return;
+
+            setIsImporting(true);
+            try {
+              const text = await file.text();
+              importTodosFromJsonText(text);
+            } finally {
+              setIsImporting(false);
+            }
+          }}
+        />
+
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
+          <button
+            type="button"
+            onClick={() => document.getElementById('import-progress-json')?.click()}
+            disabled={isImporting}
+            style={{
+              padding: '8px 12px',
+              borderRadius: 10,
+              border: '1px solid rgba(0,0,0,0.2)',
+              background: 'white',
+              cursor: isImporting ? 'not-allowed' : 'pointer',
+              opacity: isImporting ? 0.6 : 1,
+            }}
+            title="Import progress from JSON"
+          >
+            {isImporting ? 'Importing…' : 'Import'}
+          </button>
+
           <button
             type="button"
             onClick={() => exportTodos(todos)}
@@ -350,8 +418,8 @@ export default function ProgressPage() {
             todo={todo}
             onRemoveTodo={() => removeTodo(todo.id)}
             onAddSubtask={(text, weight) => addSubtask(todo.id, text, weight)}
-            onToggleSubtask={(subId) => toggleSubtask(todo.id, subId)}
-            onRemoveSubtask={(subId) => removeSubtask(todo.id, subId)}
+            onToggleSubtask={subId => toggleSubtask(todo.id, subId)}
+            onRemoveSubtask={subId => removeSubtask(todo.id, subId)}
             onSetSubtaskWeight={(subId, w) => setSubtaskWeight(todo.id, subId, w)}
           />
         ))}
@@ -613,7 +681,6 @@ function TodoCard({
                     {s.text}
                   </span>
 
-                  {/* Edit weight */}
                   <input
                     value={String(s.weight)}
                     onChange={e => onSetSubtaskWeight(s.id, Number(e.target.value))}
