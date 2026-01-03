@@ -1,0 +1,478 @@
+---
+title: "1장 벡터공간 - Vector Spaces"
+date: "2025-12-15"
+tags: ["Math", "Linear Algebra", "Friedberg", "Study"]
+description: "Linear Algebra, Stephen H. Friedberg, Chapter 1"
+---
+
+## 1.1 개론
+### 벡터의 기본
+- **벡터(vector)** - 크기와 방향을 모두 가진 물리량
+- **벡터 합의 평행사변형 법칙(parallelogram law of vector sums)** - 시점이 $P$로 일치하는 두 벡터 $x$, $y$의 합은 점 $P$에서 시작하는 벡터이고, 이는 $x$와 $y$를 이웃한 변으로 하는 평행사변형의 대각선으로 나타난다
+- **스칼라 곱(scalar multiplication)** - 벡터에 실수를 곱하는 것
+- **평행(parallel)** - 영이 아닌 두 벡터 $x$, $y$에 대해서 $y=tx$를 만족시키는 0이 아닌 실수 $t$가 존재
+
+### 벡터의 성질
+- **성질 1** - 모든 벡터 $x, y$에 대하여 $x+y=y+x$이다. (덧셈에 대한 교환법칙)
+- **성질 2** - 모든 벡터 $x, y, z$에 대하여 $(x+y)+z=x+(y+z)$이다. (덧셈에 대한 결합법칙)
+- **성질 3** - 모든 벡터 $x$에 대하여 $x+\vec{0}=x$를 만족하는 벡터 $\vec{0}$이 존재한다. (덧셈의 항등원)
+- **성질 4** - 각 벡터 $x$마다 $x+y=\vec{0}$을 만족하는 벡터 $y$가 존재한다. (덧셈의 역원)
+- **성질 5** - 모든 벡터 $x$에 대하여 $1x=x$이다. (스칼라 곱의 항등원)
+- **성질 6** - 모든 실수 $a, b$와 모든 벡터 $x$에 대하여 $(ab)x = a(bx)$이다. (스칼라 곱의 교환법칙)
+- **성질 7** - 모든 실수 $a$와 모든 벡터 $x, y$에 대하여 $a(x+y)=ax+ay$이다. (스칼라 곱의 분배법칙)
+- **성질 8** - 모든 실수 $a,b$와 모든 벡터 $x$에 대하여 $(a+b)x=ax+bx$이다. (스칼라 곱의 분배법칙)
+
+### 직선과 평면의 방정식
+- **직선의 방정식** - $x=u+tw=u+t(v-u)$
+- **평면의 방정식** - $x=A+su+tv$
+
+## 1.2 벡터공간
+### 벡터공간
+**벡터공간(vector space), 선형공간(linear space) $\mathbf{V}$** - 체 $F$에서 다음 8가지 조건을 만족하는 합과 스칼라 곱을 가지는 집합
+
+- **VS1** - 모든 $x, y \in \mathbf{V}$에 대하여 $x+y=y+x$이다. (덧셈에 대한 교환법칙)
+- **VS2** - 모든 $x, y, z \in \mathbf{V}$에 대하여 $(x+y)+z=x+(y+z)$이다. (덧셈에 대한 결합법칙)
+- **VS3** - 모든 $x \in \mathbf{V}$에 대하여 $x+\vec{0}=x$를 만족하는 $\vec{0} \in \mathbf{V}$이 존재한다. (덧셈의 항등원)
+- **VS4** - 각 $x \in \mathbf{V}$마다 $x+y=\vec{0}$을 만족하는 $y \in \mathbf{V}$가 존재한다. (덧셈의 역원)
+- **VS5** - 각 $x$에 대하여 $1x=x$이다. (스칼라 곱의 항등원)
+- **VS6** - 모든 $a, b \in F$와 모든 $x \in \mathbf{V}$에 대하여 $(ab)x = a(bx)$이다. (스칼라 곱의 교환법칙)
+- **VS7** - 모든 $a \in F$와 모든 $x, y \in \mathbf{V}$에 대하여 $a(x+y)=ax+ay$이다. (스칼라 곱의 분배법칙)
+- **VS8** - 모든 $a,b \in F$와 모든 $x \in \mathbf{V}$에 대하여 $(a+b)x=ax+bx$이다. (스칼라 곱의 분배법칙)
+
+**스칼라(scalar)** - 체 $F$의 원소  
+**벡터(vector)** - 벡터공간 $\mathbf{V}$의 원소
+
+### 여러 가지 벡터공간
+- **$n$순서쌍($n$-tuple)** - $a_1, a_2, \dots, a_n \in F$일 때, $(a_1, a_2, \dots, a_n)$
+- **성분(entry or component)** - $a_1, a_2, \dots, a_n$
+- **같다(equal)** - $a_i=b_i \ (i = 1, 2, \dots, n)$
+- $\mathbf{F}^n$ - 체 $F$에서 성분을 가져온 모든 $n$순서쌍의 집합
+- **행백터(row vector)** - $(a_1, a_2, \dots, a_n)$
+- **열백터(column vector)** - $\begin{pmatrix}a_1 \\ a_2 \\ \vdots \\ a_n \end{pmatrix}$
+- **행렬(matrix)** - $\begin{pmatrix}a_{11} & a_{12} & \cdots & a_{1n} \\ a_{21} & a_{22} & \cdots & a_{2n} \\ \vdots & \vdots & \ddots & \vdots \\ a_{m1} & a_{m2} & \cdots & a_{mn}\end{pmatrix}$
+- **대각성분(diagonal entry)** - $i=j$인 성분 $a_{ij}$
+- **행(row)** - $i$번째 행은 성분 $a_{i1}, a_{i2}, \dots, a_{in}$
+- **열(column)** - $j$번째 열은 성분 $a_{1j}, a_{2j}, \dots, a_{mj}$
+- **영행렬(zero matrix)** - 모든 성분이 0인 행렬
+- **정사각행렬(square matrix)** - $m=n$인 행렬
+- **행렬이 같다** - $a_{ij} = b_{ij}$
+- $\mathbf{M}_{m\times n}(F)$ - 성분이 체 $F$의 원소인 모든 $m \times n$ 행렬의 집합
+- $\mathcal{F}(S, T)$ - 체 $F$의 부분집합 $S$에서 $F$로 가는 집합
+- **다항식(polynomial)** - $f(x) = a_nx^n+a_{n-1}x^{n-1}+\dots+a_1x+a_0$
+- **계수(coefficient)** - 각 $a_k$
+- **영 다항식(zero polynomial)** - $a_n=a_{n-1}=\dots=a_0=0$인 다항식
+- **차수(degree)** - 계수가 0이 아닌 항의 $x$의 지수 중 가장 큰 값
+- **다항식이 같다** - 두 다항식의 차수가 같고 모든 계수가 같을 때
+- $\mathbf{P}(F)$ - 체 $F$에서 계수를 가져온 모든 다항식의 집합
+- **수열(sequence)** - 자연수 집합을 정의역, 체 $F$를 공역으로 하는 함수
+
+<Theorem title="정리 1.1 벡터 합의 소거 법칙">
+$x, y, z \in \mathbf{V}$이고 $x+z=y+z$일 때, $y=z$이다.
+</Theorem>
+
+<Proof title="정리 1.1의 증명">
+By (**VS4**), $\exist v \in \mathbf{V} \ \text{s.t.} \ z+v=\vec{0}$  
+From (**VS2**, **VS3**),
+$$
+\begin{align*} 
+x & = x + \vec{0} = x + (z + v) = (x + z) + v \\
+  & = (y + z) + v = y + (z + v) = y + \vec{0} = y
+\end{align*}
+$$
+</Proof>
+
+<Theorem title="따름정리 1">
+(**VS3**)을 만족하는 벡터 0은 유일하다.
+</Theorem>
+
+<Proof title="따름정리 1의 증명">
+Assume $\exist \vec{0}, \vec{0}' \in \mathbf{V} \ \text{s.t.} \ x + \vec{0} = x, x + \vec{0}' = x$  
+$$ 
+\vec{0} + x = x + \vec{0} = x = x + \vec{0}' = \vec{0}' + x 
+$$
+정리 1.1에 의해 
+$$
+\vec{0} = \vec{0}'
+$$
+</Proof>
+
+<Theorem title="따름정리 2">
+(**VS4**)을 만족하는 벡터 $y$는 유일하다.
+</Theorem>
+
+<Proof title="따름정리 2의 증명">
+Assume $\exist y, y' \in \mathbf{V} \ \text{s.t.} \ x + y = 0, x + y' = 0$
+$$
+y + x = x + y = 0 = x + y' = y' + x
+$$
+정리 1.1에 의해
+$$
+y = y'
+$$
+</Proof>
+
+- **영벡터(zero vector)** - $x + \vec{0} = x$를 만족시키는 벡터 $\vec{0}$
+- **덧셈에 대한 $x$의 역벡터(additive inverse)** - $x + y = \vec{0}$을 만족시키는 벡터 $y = -x$
+
+<Theorem title="정리 1.2">
+모든 벡터공간 $\mathbf{V}$에 대하여 다음이 성립한다.  
+(1) 모든 벡터 $x$에 대하여 $0x=\vec{0}$이다.  
+(2) 모든 스칼라 $a$와 모든 벡터 $x$에 대하여 $(-a)x=-(ax)=a(-x)$이다.  
+(3) 모든 스칼라 $a$에 대하여 $a\vec{0}=\vec{0}$이다.
+</Theorem>
+
+<Proof title="정리 1.2의 증명">
+(1) (**VS8**), (**VS3**), (**VS1**)에 의해  
+$$
+0x + 0x = (0 + 0)x = 0x = 0x + \vec{0} = \vec{0} + 0x
+$$
+정리 1.1에 의해
+$$
+0x = \vec{0}
+$$
+(2) $ax+(-a)x = \{a+(-a)\}x=0x=\vec{0}$이고, 따름정리 1에 의해 영벡터는 유일하므로, 
+$$
+-(ax) = (-a)x
+$$
+특히 $(-1)x=-x$이므로, (**VS6**)에 의해
+$$
+a(-x)=a\{(-1)x\}=\{a(-1)\}x=(-a)x
+$$
+(3) (**VS7**), (**VS3**), (**VS1**)에 의해
+$$
+a\vec{0} + a\vec{0}=a(\vec{0} + \vec{0})=a\vec{0}=a\vec{0}+\vec{0}=\vec{0} + a\vec{0}
+$$
+정리 1.1에 의해
+$$
+a\vec{0}=\vec{0}
+$$
+</Proof>
+
+- **점공간(zero vector space)** - $\{\vec{0}\}$
+- **짝함수/우함수(even function)** - 모든 실수 $t$에 대하여 $f(-t) = f(t)$인 함수
+
+## 1.3 부분공간
+**부분공간(subspace)** - $F$-벡터공간 $\mathbf{V}$의 부분집합 $\mathbf{W}$에 대해, $\mathbf{W}$가 $\mathbf{V}$에서 정의된 합과 스칼라 곱을 가진 $F$-벡터공간일 때, $\mathbf{W}$를 $\mathbf{V}$의 부분공간이라 한다.  
+
+**점공간인 부분공간(zero subspace)** - $\{\vec{0}\}$  
+
+**부분공간이 되기 위한 필요충분조건**
+- **성질 1** - 모든 $x \in \mathbf{W}, y \in \mathbf{W}$에 대하여 $x+y \in \mathbf{W}$이다. **(덧셈에 대하여 닫혀있음)**
+- **성질 2** - 모든 $c \in F$와 $x \in \mathbf{W}$에 대하여 $cx \in \mathbf{W}$이다. **(스칼라 곱에 대하여 닫혀있음)**
+- **성질 3** - $\mathbf{W}$는 영벡터를 포함한다.
+- **성질 4** - $\mathbf{W}$에 속한 모든 벡터의 덧셈에 대한 역벡터는 $\mathbf{W}$의 원소이다.
+
+<Theorem title="정리 1.3">
+벡터공간 $\mathbf{V}$와 부분집합 $\mathbf{W}$를 생각하자. $\mathbf{W}$가 $\mathbf{V}$의 부분공간이기 위한 필요충분은 다음 세 가지 조건을 만족시키는 것이다.  
+(1) $0 \in \mathbf{W}$  
+(2) 모든 $x \in \mathbf{W}, y \in \mathbf{W}$에 대하여 $x+y \in \mathbf{W}$이다.  
+(3) 모든 $c \in F$와 모든 $x \in \mathbf{W}$에 대하여 $cx \in \mathbf{W}$이다.
+</Theorem>
+
+<Proof title="정리 1.3의 증명">
+($\Rightarrow$)  
+(2), (3) $\rightarrow$ $\mathbf{W}$가 $\mathbf{V}$의 부분공간이므로 성립  
+(1) $\mathbf{W}$의 영벡터를 $\vec{0}'$, $\mathbf{V}$의 영벡터를 $\vec{0}$를 이라고 하면, 정리 1의 따름정리 1에 의해 $\vec{0}' = \vec{0}$
+
+($\Leftarrow$)  
+(**성질 1, 2, 3**) 조건 (1), (2), (3)에서 직접적으로 도출   
+(**성질 4**) 조건 (3), 정리 1.2에 의해 $x \in \mathbf{W}$이면 $-x = (-1)x \in \mathbf{W}$이다.
+</Proof>
+
+- **전치행렬(transpose matrix)** - $m\times n$ 행렬 $A$의 전치행렬 $A^t$은 $A$와 행과 열을 바꾸어 얻은 $n \times m$ 행렬이다. 즉, $(A^t)_{ij}=A_{ji}$
+- **대칭행렬(symmetric matrix)** - $A^t=A$인 행렬
+- **상삼각행렬/위삼각행렬(upper triangular matrix)** - $i > j$일 때, $A_{ij} = 0$인 행렬
+- **대각행렬(diagonal matrix)** - $i \neq j$일 때, $M_{ij} = 0$인 정사각행렬
+- **대각합(trace)** - 정사각행렬에서 모든 대각성분의 합
+- $\mathbf{C}(R)$ - 연속함수의 집합
+
+<Theorem title="정리 1.4">
+벡터공간 $\mathbf{V}$의 부분공간들을 생각하자. 이 부분공간들의 임의의 교집합은 $\mathbf{V}$의 부분공간이다.
+</Theorem>
+
+<Proof title="정리 1.4의 증명">
+$\mathbf{V}$의 부분공간을 원소로 하는 집합족을 $\mathcal{C}$라 하고, $\mathcal{C}$에 속한 모든 부분공간의 교집합을 $\mathbf{W}$라 하자.  
+(1) $\vec{0} \in \mathbf{W}$  
+(2), (3) $\forall \mathbf{U} \subseteq \mathcal{C}$에 대하여, $\mathbf{U}$는 벡터공간이므로
+$$
+\forall x, y \in \mathbf{W}, x+y\in\mathbf{U}, ax\in\mathbf{U}
+$$
+$x+y, ax$는 모든 $\mathbf{U}$에 속해있으므로, 교집합의 정의에 따라
+$$
+x+y\in\mathbf{W}, ax \in \mathbf{W}
+$$
+그러므로 $\mathbf{W}$는 정리 1.3에 의해 $mathbf{V}$의 부분공간이다.
+</Proof>
+
+- **집합의 합(sum)** - $S_1 + S_2 = \{x + y \mid x \in S_1, y \in S_2 \}$
+- **직합(direct sum)** - 벡터공간 $\mathbf{V}$와 부분공간 $\mathbf{W}_1$, $\mathbf{W}_2$에 대하여 $\mathbf{W}_1 \cap \mathbf{W}_2 = \{\vec{0}\}$이고, $\mathbf{W}_1 + \mathbf{W}_2= \mathbf{V}$이면, $\mathbf{V}=\mathbf{W}_1 \oplus \mathbf{W}_2$
+- **반대칭행렬(skew-symmetric matrix)** - $M^t=-M$인 행렬
+- **잉여류(coset)** - $\forall v \in \mathbf{V}, \{v\} + \mathbf{W} = v + \mathbf{W} \coloneqq \{v + w \mid w \in \mathbf{W}\}$
+- **몫공간(quotient space)** - 집합족 $\mathbf{V}/\mathbf{W}=\{v+\mathbf{W} \mid v \in \mathbf{V}\}$은 법 $\mathbf{W}$에 대한 $\mathbf{V}$의 몫공간 (quotient space over $\mathbf{V}$ modulo $\mathbf{W}$)
+
+
+## 1.4 일차결합과 연립일차방정식
+**일차결합(linear combination)** - $\mathbf{V}$는 벡터공간이고 $S$는 $\mathbf{V}$의 공집합이 아닌 부분집합일 때, 유한개의 벡터 $u_1, u_2, \dots, u_n \in S$와 스칼라 $a_1, a_2, \dots, a_n$에 대하여, $v=a_1u_1+a_2u_2+\dots+a_nu_n$인 벡터 $v \in \mathbf{V}$  
+**계수(coefficient)** - $a_1, a_2, \dots, a_n$
+
+**생성공간(span)** - 벡터공간 $\mathbf{V}$의 공집합이 아닌 부분집합 $S$에 대해, $S$의 벡터를 사용하여 만든 모든 일차결합의 집합. $\text{span}(S)$로 표기한다. $\text{span}(\varnothing) = \{\vec{0}\}$
+
+<Theorem title="정리 1.5">
+벡터공간 $\mathbf{V}$의 임의의 부분집합 $S$의 생성공간은 $S$를 포함하는 ($\mathbf{V}$의) 부분공간이다. 또한, $S$를 포함하는 $\mathbf{V}$의 부분공간은 반드시 $S$의 생성공간을 포함한다.
+</Theorem>
+
+<Proof title="정리 1.5의 증명">
+1) $S=\varnothing$인 경우, $\text{span}(\varnothing) = \{\vec{0}\}$이고, 이는 $\mathbf{V}$의 부분공간이며, $S=\varnothing$를 포함한다. 또, 모든 부분공간은 $\varnothing$을 포함하며, 모든 부분공간은 $\{\vec{0}\}$를 포함한다.  
+
+2) $S\neq\varnothing$인 경우  
+(a) $z\in S$에 대하여, $0z = \vec{0} \in \text{span}(S)$.   
+(b), (c) $\forall x, y \in \text{span}(S)$, $u_1, u_2, \dots, u_m, v_1, v_2, \dots, v_n \in S$, $a_1, a_2, \dots, a_m, b_1, b_2, \dots, b_n, c \in F$
+$$
+x = a_1u_1 + a_2u_2 + \dots + a_mu_m, y = b_1v_1 + b_2v_2 + \dots + b_nv_n
+$$
+$$
+x+y = a_1u_1 + a_2u_2 + \dots + a_mu_m + b_1v_1 + b_2v_2 + \dots + b_nv_n \in \text{span}(S) \\
+cx = (ca_1)u_1 + (ca_2)u_2 + \dots + (ca_m)u_m \in \text{span}(S)
+$$
+따라서 $\text{span}(S)$는 $\mathbf{V}$의 부분공간이다. 또, $v \in S$이면, $v = 1 \dot v \in \text{span}(S)$이므로, $S \subseteq \text{span}(S)$
+  
+또, $\mathbf{V}$의 부분공간 $\mathbf{W}$가 $S$를 포함한다고 가정하면, $\forall w \in \text{span}(S)$, $w_1, w_2, \dots, w_k \in S$와 스칼라 $c_1, c_2, \dots, c_k$에 대하여 
+$$
+w = c_1w_1 + c_2w_2 + \dots + c_kw_k
+$$
+이고, $S \subseteq \mathbf{W}$이므로, $w_1, w_2, \dots, w_k \in \mathbf{W}$. 또, $w = c_1w_1 + c_2w_2 + \dots + c_kw_k \in \mathbf{W}$이다. 그러므로, $\text{span}(S) \subseteq \mathbf{W}$
+</Proof>
+
+**생성한다(generate 또는 span)** - 벡터공간 $\mathbf{V}$의 부분집합 $S$에 대하여, $\text{span}(S) = \mathbf{V}$인 경우, $S$는 $\mathbf{V}$를 생성한다고 한다.
+
+## 1.5 일차종속과 일차독립
+**일차종속(linearly dependent)** - 벡터공간 $\mathbf{V}$의 부분집합 $S$에 대하여
+$$
+a_1u_1+a_2u_2+\cdots+a_nu_n=\vec{0}
+$$
+을 만족하는 유한개의 서로 다른 벡터 $u_1, u_2, \dots, u_n \in S$와 적어도 하나는 0이 아닌 스칼라 $a_1, a_2, \dots, a_n$이 존재하는 경우  
+
+**영벡터의 자명한 표현(trivial representation of $\vec{0}$)** - $a_1=a_2=\cdots=a_n=0$인 경우  
+**일차독립(linearly independent)** - 벡터공간의 부분집합 $S$가 일차종속이 아닌 경우  
+1) 공집합은 일차독립이다. 어떤 집합이 일차종속이기 위해서는 공집합이 아니어야 한다
+2) 영이 아닌 벡터 하나로 이루어진 집합은 일차독립이다.
+3) $S$가 일차독립 $\Leftrightarrow$ $\vec{0}$을 $S$에 대한 일차결합으로 표현하는 방법이 자명한 표현뿐인 경우
+
+<Theorem title ="정리 1.6">
+$\mathbf{V}$는 벡터공간이고 $S_1 \subseteq S_2 \subseteq \mathbf{V}$인 경우, $S_1$이 일차종속이면 $S_2$도 일차종속이다.
+</Theorem>
+<Proof title="정리 1.6의 증명">
+$S_1$이 일차종속이므로 벡터 $u_1, u_2, \dots, u_n$ \in S_1에 대해
+$$
+a_1u_1 + a_2u_2 + \cdots + a_nu_n = \vec{0}
+$$
+이 되도록 하는 하나라도 0이 아닌 스칼라 $a_1, a_2, \dots, a_n$이 존재한다.
+이때, $u_1, u_2, \dots, u_n \in S_2$이므로, 벡터 $v_1, v_2, \dots, v_n \in S_2 \setminus S_1$에 대해
+$$
+a_1u_1 + a_2u_2 + \cdots + a_nu_n + 0v_1+0v_2+\cdots+0v_m= \vec{0}
+$$
+그러므로, $S_2$는 일차종속이다.
+</Proof>
+
+<Theorem title ="따름정리">
+$\mathbf{V}$는 벡터공간이고 $S_1 \subseteq S_2 \subseteq \mathbf{V}$인 경우, $S_2$가 일차독립이면 $S_1$도 일차독립이다.
+</Theorem>
+<Proof title="따름정리의 증명">
+정리 1.6의 대우명제이다.
+</Proof>
+
+<Theorem title ="정리 1.7">
+벡터공간 $\mathbf{V}$와 일차독립인 부분집합 $S$, 그리고 $S$에 포함되지 않는 벡터 $v\in\mathbf{V}$에 대하여 $S\cup\{v\}$가 일차종속이기 위한 필요충분조건은 $v\in\text{span}(S)$이다.
+</Theorem>
+<Proof title="정리 1.7의 증명">
+$S\cup\{v\}$가 일차종속이면 
+$$
+a_1u_2 + a_2u_2 + \cdots + a_nu_n = \vec{0}
+$$
+을 만족시키는 벡터 $u_1, u_2, \dots, u_n \in S_2 \cup \{v\}$와 적어도 하나는 0이 아닌 스칼라 $a_1, a_2, \dots, a_n$이 존재한다.
+$S$가 일차독립이므로 $u_i$ 중 하나는 $v$이다. 이를 $u_1$이라 하면, 
+$$
+v=a_1^{-1}(-a_2u_2-\cdots-a_nu_n)=-(a_1^{-1}a_2)u_2-\cdots-(a_1^{-1}a_n)u_n
+$$
+v는 $S$의 일차결합이므로 $v \in \text{span}(S)$이다.  
+거꾸로 $v \in \text{span}(S)$이면, $v_1, v_2, \dots, v_m \in S$와 스칼라 $b_1, b_2, \dots, b_m$이 존재한다.
+$$
+v=b_1v_1+b_2v_2+\cdots+b_mv_m
+$$
+그러므로, $\vec{0}=b_1v_1+b_2v_2+\cdots+b_mv_m+(-1)v$이다. $v \notin S$이므로 $v \neq v_i$. 그러므로 $\{v_1, v_2, \dots, v_m, v\}$는 일차종속이고, 정리 1.6에 의하여 $S\cup\{v\}$도 일차종속이다.
+</Proof>
+
+## 1.6 기저와 차원
+### 기저
+**기저(basis)** - - 벡터공간 $\mathbf{V}$의 부분집합 $\beta$에 대하여 $\beta$가 일차독립이고 $\mathbf{V}$를 생성하는 경우  
+**점공간의 기저** - $\{\varnothing\}$  
+**표준기저(standard basis)** - $e_1=(1,0,0,\dots,0), e_2=(0,1,0,\dots,0), \dots, e_n=(0,0,0,\dots,1)$일 때 $\mathbf{F}^n$의 기저
+$$
+\{e_1, e_2, \dots, e_n\}
+$$
+
+<Theorem title="정리 1.8">
+벡터공간 $\mathbf{V}$와 이 공간에 속한 서로 다른 벡터 $u_1, u_2, \dots, u_n$에 대하여 $\beta=\{u_1, u_2, \dots, u_n\}$로 두면
+$$
+\beta \text{는 $\mathbf{V}$의 기저} \Leftrightarrow \forall v\in\mathbf{V}, v = a_1u_1+a_2u_2+\cdots+a_nu_n\text{가 유일하게 결정된다}
+$$
+</Theorem>
+<Proof title="정리 1.8의 증명">
+1) $\Rightarrow$
+$$
+v = a_1u_1+a_2u_2+\cdots+a_nu_n = b_1u_1+b_2u_2+\cdots+b_nu_n
+$$
+$$
+\vec{0} = (a_1-b_1)u_1 + (a_2 -b_2)u_2 + \cdots + (a_n-b_n)u_n
+$$
+$\beta$가 일차독립이므로 $a_1-b_1 = a_2-b_2 = \cdots = a_n-b_n = 0$, $a_i = b_i$. 그러므로 일차결합 표현은 유일하다
+
+2) $\Leftarrow$  
+$v=a_1u_1+a_2u_2+\cdots+a_nu_n, \vec{0} = b_1u_1+b_2u_2+\cdots+b_nu_n$이라고 두면, 
+$$
+v = v + \vec{0} = (a_1+b_1)u_1 + (a_2+b_2)u_2 + \cdots + (a_n + b_n)u_n
+$$
+이때, $v$의 $\beta$에 대한 일차결합 표현은 유일하므로 $a_i+b_i = a_i, b_i = 0$. 그러므로, $\vec{0}$을 $\beta$에 대한 일차결합으로 표현하는 방법이 자명한 경우 뿐이므로, $\beta$는 일차독립이다. 추가적으로, 모든 벡터 $v \in \mathbf{V}$의 $\beta$에 대한 일차결합 표현이 유일하게 존재하므로 $\beta$는 $\mathbf{V}$를 형성한다. 그러므로, $\beta$는 $\mathbf{V}$의 기저이다.
+</Proof>
+
+<Theorem title="정리 1.9">
+유한집합 $S$가 $\mathbf{V}$를 생성하면, $S$의 부분집합 중 $\mathbf{V}$의 기저가 존재한다
+</Theorem>
+<Proof title="정리 1.9의 증명">
+$S = \varnothing$ 또는 $S = \{\vec{0}\}$이면, $\mathbf{V} = \{\vec{0}\}$이다. 이때, $\varnothing$은 $S$의 부분집합이면서 $\mathbf{V}$의 기저이다.  
+$S$의 영이 아닌 벡터 $u_1$에 대하여, $\{u_1\}$은 일차독립인 부분집합이다. 여기에 ${u_1, u_2, \dots, u_k}$가 일차독립이 되도록 $S$에서 순차적으로 $u_2, \dots, u_k$를 꺼낸다고 가정하면, $S$가 유한집합이므로 이 작업은 유한 번 반복하여 꺼내어 완료할 수 있고, 최종적으로 얻은 집합을 $\beta$라 하면,
+1) $\beta = S$이여서, $S$는 일차독립이고 $\mathbf{V}$의 생성집합이므로 $\mathbf{V}$의 기저이다.
+2) $\beta$가 일차독립인 $S$의 진부분집합이라면, $\forall v \in S \setminus \beta$에 대해, $\{v\} \cup \beta$는 일차종속이다. 이때, $\beta$는 일차독립이므로, $\beta$가 $\mathbf{V}$를 생성함을 보이면 된다. 이때, 정리 1.5에 의해 $S \subseteq \text{span}(S)$임을 보이자. $v \in S$에 대하여 $v \in \beta$라면 $v \in \text{span}(S)$이다. $v \notin \beta$라면 $\{v\} \cup \beta$는 일차종속이다. 정리 1.7로부터 $v \in \text{span}(\beta)$이다. 그러므로 $S \subseteq \text{span}(\beta)$이다.
+</Proof>
+
+### 차원
+**차원(dimension)** $\text{dim}(\mathbf{V})$ - $\mathbf{V}$의 기저가 $n$개의 벡터로 이루어질 때 유일한 자연수 $n$  
+**유한차원(finite dimension)** - 기저가 유한집합인 벡터공간  
+**무한차원(infinite dimension)** - 유한차원이 아닌 벡터공간  
+- 점공간$\{\vec{0}\}$의 차원은 0이다.
+- $\mathbf{F}^n$의 차원은 $n$이다.
+- $\mathbf{M}_{m\times n}(F)$의 차원은 $mn$이다.
+- $\mathbf{P}_n(F)$의 차원은 $n+1$이다.  
+- $\mathbf{P}$은 무한차원이다.
+
+어느 체 위에 있는지에 따라 차원이 달라질 수 있다.
+- 복소수체 $C$에서 복소수 벡터공간의 차원은 $1$이다.
+- 실수체 $R$에서 복소수 벡터공간의 차원은 $2$이다.
+
+
+<Theorem title="정리 1.10 대체정리(replacement theorem)">
+$n$개의 벡터로 이루어진 집합 $G$가 벡터공간 $\mathbf{V}$를 생성한다고 하자. $L$이 $m$개의 일차독립인 벡터로 이루어진 $\mathbf{V}$의 부분집합이라면 $m \leq n$이다. 또한 $n-m$개의 벡터로 이루어졌으며 $L\cup H$가 $\mathbf{V}$를 생성하는 집합 $H \subseteq G$가 존재한다.
+</Theorem>
+<Proof title="정리 1.10의 증명">
+$m$에 대한 수학적 귀납법을 사용하자.  
+Basis Step) $m=0$일 때, $H = G$  
+Induction Step) 어떤 정수 $m \geq 0$일 때, 위 정리가 성립한다고 가정하고 $L = \{v_1, v_2, \dots, v_{m+1}\}$이 $m+1$개의 벡터로 이루어진 일차독립인 부분집합으로 잡자. 정리 1.6의 따름정리에 의해 그 부분집합인 $\{v_1, v_2, \dots, v_m\}$도 일차독립이다. 위 정리가 $m$일 때 성립하므로 $\{v_1, v_2, \dots, v_m\} \cup \{u_1, u_2, \dots, u_{n-m}\}$가 $\mathbf{V}$를 생성하도록 하는 $G$의 부분집합 $\{u_1, u_2, \dots, u_{n-m}\}$이 존재한다. 이때 $n = m$이면 $\{v_1, v_2, \dots, v_{m+1}\}$은 일차종속이 되므로 $n > m, n \geq m+1$이다. 그럼 다음 식을 만족시키는 스칼라 $a_i, b_i$가 존재한다.
+$$
+a_1v_1 + a_2v_2 + \cdots + a_mv_m + b_1u_1 + b_2u_2 + \cdots + b_{n-m}u_{n-m}=v_{m+1}
+$$
+이때, $b_i$ 중 0이 아닌 값을 $b_1$이라고 두면, $u_1 = (-b_1^{-1}a_1)v_1 + (-b_1^{-1}a_2)v_2 + \cdots + (-b_1^{-1}a_m)v_m + (-b_1^{-1})v_{m+1} + (-b_1^{-1}b_2)u_2 + (-b_1^{-1}b_{n-m})u_{n-m}$. 그러므로 $H=\{u_2, \dots, u_{n-m}\}$로 잡으면 $u_1 \in \text{span}(L \cup H)$이고, 
+$$
+\{v_1, v_2, \dots, v_m, u_1, u_2, \dots, u_{n-m}\} \subseteq \text{span}(L \cup H)
+$$
+이다. 이때, $\{v_1, v_2, \dots, v_m, u_1, u_2, \dots, u_{n-m}\}$가 $\mathbf{V}$를 생성하므로 $\text{span}(L \cup H) = \mathbf{V}$이다. $H$는 $n - m - 1 = n-(m+1)$개의 벡터를 가지므로, $m+1$에서도 성립한다.
+
+
+</Proof>
+
+<Theorem title="따름정리 1">
+벡터공간 $\mathbf{V}$가 유한집합인 기저를 포함한다고 가정하면, $\mathbf{V}$의 모든 기저는 유한집합이며, 같은 개수의 벡터로 이루어져 있다.
+</Theorem>
+<Proof title="따름정리 1의 증명">
+$\beta$가 $n$개의 벡터로 이루어진 기저, $\gamma$ 또한 기저라고 가정하자. $\gamma$가 $n$개를 초과한 벡터로 이루어져 있다면, $n+1$개의 벡터로 이루어진 $\gamma$의 부분집합 $S$를 생각할 수 있는데, $S$는 일차독립이고, $\beta$는 $\mathbf{V}$를 생성하므로, 대체정리에 의해 $n+1\leq n$이여야 한다. 그러나 이는 모순이므로 $\gamma$가 $m$개의 벡터로 이우러진 유한집합이면 $m \leq n$이다. 마찬가지로 $n \leq m$이므로 $m=n$이다.
+</Proof>
+
+<Theorem title="따름정리 2">
+$\mathbf{V}$를 차원이 $n$인 벡터공간이라 하면,
+1) $\mathbf{V}$의 유한 생성집합에는 반드시 $n$개 이상의 벡터가 있다. 또한, $n$개의 벡터로 이루어진 $\mathbf{V}$의 생성집합은 $\mathbf{V}$의 기저이다.
+2) 일차독립이고 $n$개의 벡터로 이루어진 부분집합은 $\mathbf{V}$의 기저이다.
+3) 일차독립인 부분집합을 확장시켜 기저를 만들 수 있다. 즉, $L \subseteq \mathbf{V}$이 일차독립이면 $L \subseteq \beta$인 $\mathbf{V}$의 기저 $\beta$가 존재한다.
+</Theorem>
+<Proof title="따름정리 2의 증명">
+1) 유한 생성집합을 $G$라 하면, 정리 1.9에 의해 $G$는 기저 $H$를 포함하고 있고, 대체정리의 따름정리 1에 의해 기저는 $n$개의 벡터로 이루어져 있다. 그러므로, $G$에는 $n$개 이상의 벡터가 있고, $G$가 $n$개의 벡터를 가지고 있다면 $G=H$, 즉 $G$는 기저이다.
+2) $n$개의 벡터로 이루어진 집합을 $L$이라고 하면 대체정리에 의해, 0개의 벡터로 이루어져 있고, $L\cup H$가 $\mathbf{V}$를 생성하는 집합 $H$가 존재한다. 그런데, 이러한 집합은 공집합이므로, $L$은 $\mathbf{V}$를 생성한다. $L$은 일차독립이기도 하므로, 기저이다.
+3) $m$개로 이루어져있고, 일차독립인 $\mathbf{V}$의 부분집합을 $L$이라 하면, 대체정리에 의해 $n-m$개의 벡터로 이루어졌으며, $L \cup H$가 $\mathbf{V}$를 생성하는 $L$가 존재한다. 이때, $L \cup H$에는 최대 $n$개의 벡터가 있으므로, 1.에 의해 기저이다.
+</Proof>
+
+### 부분공간의 차원
+<Theorem title="정리 1.11">
+유한차원 벡터공간 $\mathbf{V}$에 대하여 부분공간 $\mathbf{W}$는 유한차원이고, $\text{dim}(\mathbf{W}) \leq \text{dim}(\mathbf{V})$이다. 또, $\text{dim}(\mathbf{W}) = \text{dim}(\mathbf{V})$이면, $\mathbf{W} =\mathbf{V}$이다.
+</Theorem>
+<Proof title="정리 1.11의 증명">
+1) 만약 $\mathbf{W} = \{\vec{0}\}$이라면, $\text{dim}(\mathbf{W}) = 0 \leq n$이다. 이 경우가 아닐 때, $\{x_1, x_2, \dots, x_k\}$가 일차독립이 되도록 $\mathbf{W}$에서 벡터를 하나씩 꺼내자. 이때, $\mathbf{V}$의 일차독립인 부분집합은 최대 $n$개의 벡터로만 이루어질 수 있으므로, $k \leq n$이고, $\mathbf{W}$에서 새로운 벡터를 꺼내, 해당 집합에 추가하면 일차종속이 되므로, 정리 1.7에 의해 해당 집합은 $\mathbf{W}$의 기저이다.
+2) 만약 $\text{dim}(\mathbf{W}) = n$인 경우, $\mathbf{W}$의 기저는 대체정리의 따름정리 2에 의해 $\mathbf{V}$의 기저이기도 하다. 그러므로, $\mathbf{W} = \mathbf{V}$이다.
+</Proof>
+<Theorem title="따름정리">
+유한차원 벡터공간 $\mathbf{V}$의 부분공간 $\mathbf{W}$에 대하여, $\mathbf{W}$의 임의의 기저를 가져오면 이 기저를 확장하여 $\mathbf{V}$의 기저로 확장할 수 있다.
+</Theorem>
+<Proof title="따름정리의 증명">
+$\mathbf{W}$의 기저 $S$에 대하여, 이는 $\mathbf{V}$의 일차독립인 부분집합이므로 대체정리의 따름정리 2에 의해 $\mathbf{V}$의 기저로 확장할 수 있다.
+</Proof>
+
+### 라그랑주 보간법
+**라그랑주 다항식(Lagrange polynomial)** - 
+$$
+f_i(x) = \frac{(x-c_0)\cdots(x-c_{i-1})(x-c_{i+1})\cdots (x-c_n)}{(c_i-c_0)\cdots(c_i-c_{i-1})(c_i-c_{i+1})\cdots (c_i-c_n)} = \prod^{n}_{\substack{k=0 \\ k \neq i}} \frac{x-c_k}{c_i-c_k}
+$$
+**라그랑주 보간법(Lagrange interpolation formula)** - 좌표평면 상에 $n+1$개의 점들이 주어졌을 때, 그 점들을 지나는 $n$차 다항식을 구하는 방법
+$$
+g = \sum^n_{i=0}g(c_i)f_i
+$$
+<Proof title="완전성 증명">
+$\beta = \{f_0, f_1, \dots, f_n\}$이 $\mathbf{P}_n(F)$의 기저임을 보이자. 
+$$
+\sum^n_{i=0}a_if_i=0
+$$
+이라는 함수를 고려하고, 여기에 $c_j$를 대입하면, $f_i(c_j) = \delta_{ij}$이므로,
+$$
+\sum^n_{i=0}a_if_i(c_j) = a_j
+$$
+이다. 그러므로, $a_i$는 0, $\beta$는 일차독립이다. 한편, $\mathbf{P}_n$의 차원은 $n+1$이므로, 대체정리의 따름정리 2에 의해 $\beta$는 $\mathbf{P}_n$의 기저이다.
+</Proof>
+
+## 1.7 일차독립인 극대 부분집합
+- **극대(maximal)** - 원소 $M$을 포함하는 집합족 $\mathcal{F}$의 멤버가 오직 $M$뿐인 경우, $M$
+- **멱집합(power set)** - 공집합이 아닌 집합 $S$의 모든 부분집합을 원소로 가지는 집합족
+- **사슬(chain)** - 집합족 $\mathcal{C}$의 멤버 $A, B$를 임의로 선택할 때 $A \subseteq B$ 또는 $B \subseteq A$일 때
+
+<Theorem title="하우스도르프 극대원리(Hausdorff maximal principle)">
+집합족 $\mathcal{F}$에 포함되는 임의의 사슬 $\mathcal{C}$를 가져왔을 때, $\mathcal{C}$의 모든 멤버를 포함하는 $\mathcal{F}$의 멤버가 존재하면, $\mathcal{F}$에는 극대원소가 있다.
+</Theorem>
+
+이는 선택공리(axiom of choice)와 동치이므로 증명할 수 없다.
+
+**일차독립인 극대 부분집합(maximal linearly independent subset)** - 벡터공간 $\mathbf{V}$의 부분집합 $S$에 대하여, $B$가 다음의 두 조건을 만족하는 $S$의 부분집합일 때
+1) 집합 $B$는 일차독립이다.
+2) 집합 $B$를 포함하고 일차독립인 부분집합은 오직 $B$ 뿐이다.
+
+기저는 일차독립인 극대 부분집합이다.
+
+<Theorem title="정리 1.12">
+$\mathbf{V}$는 벡터공간이고, 부분집합 $S$가 $\mathbf{V}$를 생성할 때, $\beta$가 $S$의 일차독립인 극대 부분집합이면 $\beta$는 $\mathbf{V}$의 기저이다.
+</Theorem>
+<Proof title="정리 1.12의 증명">
+$\beta$가 $S$의 일차독립인 극대 부분집합이면, $\beta$는 일차독립이므로 $S \subseteq \text{span}(\beta)$임을 보이자. $v \notin \text{span}(\beta)$인 $v \in S$가 존재한다면 정리 1.7에 의해 $\beta \cup \{v\}$는 일차독립이고, $\beta$가 극대라는 가정에 모순이다. 그러므로, $S \subseteq \text{span}(\beta)$이고, 정리 1.5로부터 $\text{\span}(\beta) = \mathbf{V}$이다.
+</Proof>
+
+<Theorem title="정리 1.13">
+벡터공간과 $\mathbf{V}$와 일차독립인 부분집합 $S$에 대해, $S$를 포함하는 $\mathbf{V}$의 일차독립인 극대 부분집합이 존재한다.
+</Theorem>
+<Proof title="정리 1.13의 증명">
+$S$를 포함하는 일차독립인 부분집합을 원소로 가지는 집합족을 $\mathcal{F}$라 두고, 여기서 임의의 사슬 $\mathcal{C}$를 꺼내자. 이때, $\mathcal{C}$의 모든 멤버를 포함하는 $\mathcal{F}$의 멤버를 $U$라고 두자.  
+
+$\mathcal{C}= \varnothing$이면, $U = S$로 잡는다. $\mathcal{C} \neq \varnothing$이면, $\mathcal{C}$에 속한 모든 멤버의 합집합을 $U$로 잡는다. 이때, $S \subseteq U \subseteq \mathbf{V}$이다.  
+
+$u_1, u_2, \dots, u_n \in U$이고, $a_1u_1+a_2u_2+\cdots+a_nu_n = \vec{0}$이라 가정하자. 이때, $u_i \in A_i$인 $A_i$가 존재한다. 이때, $\mathcal{C}$는 사슬이므로, 모든 $A_i$를 포함하는 $A_k$가 존재한다. $A_k$는 일차독립이므로, $a_1=a_2=\cdots=a_n=0$, $U$는 일차독립이다.  
+
+하우스도르프 극대원리에 의해 $\mathcal{F}$에는 극대원소가 있다. 이 극대원소는 $\mathbf{V}$의 일차독립인 극대 부분집합이며 $S$를 포함한다.
+</Proof>
+
+<Theorem title="정리 1.13의 따름정리">
+모든 벡터공간은 기저를 포함한다.
+</Theorem>
+
+무한차원 벡터공간이 주어질 때, 무한차원 벡터공간의 모든 기저는 기수(cardinality)가 같다.

@@ -1,0 +1,184 @@
+---
+title: "Chapter 1 - The Wave Function"
+date: "2025-12-25"
+tags: ["Physics", "Quantum Mechanics", "Griffiths", "Study"]
+description: "Introduction to Quantum Mechanics, David J. Griffiths, Chapter 1"
+---
+
+## 1.1 The Schrödinger Equation
+- **Wave Function $\Psi(x,t)$** - In quantum mechanics, we try to look for a particle's wave function.
+- **Schrödinger Equation**
+$$
+i\hbar \frac{\partial\Psi}{\partial t} = -\frac{\hbar^2}{2m} \frac{\partial^2\Psi}{\partial x^2}+V\Psi
+$$
+- **Dirac Constant** - $\hbar = \frac{h}{2\pi} = 1.054573\times10^{-34} \text{J}\cdot\text{s}$
+
+## 1.2 The Statistical Interpretation
+- **Statistical Interpretation** - By Max Born
+$$
+\int^b_a|\Psi(x,t)|^2 dx = \text{Probability of finding particle between $a$ and $b$ at time $t$}
+$$
+The Statistical Interpretation leads to an **indeterminacy** in quantum mechanics.  
+Three main schools to interpreting indeterminacy - What happened before the measurement?
+1) **Realist** - Quantum mechanics is incomplete. There is more to discover, like a *hidden variable*
+2) **Orthodox (Copenhagen Interpretation)** - Measurement *disturbs* the particle into a definite position
+3) **Agnostic** - We don't know. We can't know. How can we know?  
+
+Bell's Discovery - Whether the particle had a precise position or not makes an *observable* difference.  
+Additional experiments show that the orthodox interpretation is correct.  
+Measurement **collapses** the wave function, into a sharp peak.
+
+## 1.3 Probability
+### 1.3.1 Discrete Variables
+- **Probability** 
+$$
+P(j)=\frac{N(j)}{N}
+$$
+- **Expectation Value(Average)**
+$$
+\langle j \rangle = \frac{\sum jN(j)}{N} = \sum^{\infty}_{j=0}jP(j) \\
+\langle f\langle(j) \rangle\rangle = \sum^\infty_{j=0}f(j)P(j)
+$$
+- **Variance**
+$$
+\sigma^2 \equiv \bigl \langle (\Delta j)^2 \bigr \rangle
+$$
+- **Standard Deviation**
+$$
+\sigma = \sqrt{\bigl\langle j^2 \bigr\rangle - {\langle j \rangle}^2}
+$$
+
+### 1.3.2 Continuous Variables
+- **Probability Density $\rho(x)$**
+$$
+P_{ab} = \int^b_a \rho(x) dx
+$$
+$$
+\int^{+\infty}_{-\infty} \rho(x) dx = 1
+$$
+$$
+\langle x \rangle = \int^{+\infty}_{-\infty} x\rho(x) dx
+$$
+$$
+\langle f(x) \rangle = \int^{+\infty}_{-\infty} f(x)\rho(x) dx
+$$
+$$
+\sigma^2 = \bigl\langle(\Delta x)^2\bigr\rangle = \bigl\langle x^2\bigr\rangle - {\langle x \rangle}^2
+$$
+
+## 1.4 Normalization
+**Normalization** - Finding the constant $A$ in $A\Psi(x,t)$ so that, 
+$$
+\int^{+\infty}_{-\infty} {|\Psi(x,t)|}^2 dx = 1
+$$
+*Non-normalizable* solutions, where normalization isn't possible, cannot represent particles. All acceptable soluions to the Schrödinger equation must be *square-integrable*.  
+
+$\int^{+\infty}_{-\infty} {|\Psi(x,t)|}^2 dx$ is constant over $t$. Therefore, if $\Psi$ is normalized at $t=0$, then it stays normalized.
+
+<Proof>
+$$
+\frac d{dt}\int^{+\infty}_{-\infty} {|\Psi(x,t)|}^2 dx = \int^{+\infty}_{-\infty} \frac{\partial}{\partial t}{|\Psi(x,t)|}^2 dx
+$$
+$$
+\begin{align*}
+\frac{\partial}{\partial t}|\Psi(x,t)|^2 &= \frac{\partial}{\partial t}(\Psi^*\Psi) \\
+&= \frac{\partial\Psi^*}{\partial t}\Psi + \Psi^*\frac{\partial\Psi}{\partial t} \\
+&= -\frac{i\hbar}{2m}\frac{\partial^2\Psi^*}{\partial x^2}\Psi+\frac{i}{\hbar}V\Psi^*\Psi + \Psi^*\frac{i\hbar}{2m}\frac{\partial^2\Psi}{\partial x^2}-\Psi^*\frac{i}{\hbar}V\Psi \\
+&= -\frac{i\hbar}{2m}\frac{\partial^2\Psi^*}{\partial x^2}\Psi+ \Psi^*\frac{i\hbar}{2m}\frac{\partial^2\Psi}{\partial x^2} \\
+&= \frac{i\hbar}{2m}\left(\Psi^*\frac{\partial^2\Psi}{\partial x^2}-\frac{\partial^2\Psi^*}{\partial x^2}\Psi\right)
+\end{align*}
+$$
+By the Schrödinger Equation,
+$$
+i\hbar \frac{\partial\Psi}{\partial t} = -\frac{\hbar^2}{2m} \frac{\partial^2\Psi}{\partial x^2}+V\Psi
+$$
+Since,
+$$
+\begin{align*}
+\frac{\partial}{\partial x} \left(\Psi^*\frac{\partial\Psi}{\partial x} - \frac{\partial \Psi^*}{\partial x}\Psi\right) &= \frac{\partial\Psi^*}{\partial x}\frac{\partial\Psi}{\partial x} + \Psi^*\frac{\partial^2\Psi}{\partial x^2}-\frac{\partial^2\Psi^*}{\partial x^2}\Psi-\frac{\partial\Psi^*}{\partial x}\frac{\partial\Psi}{\partial x} \\
+&=\Psi^*\frac{\partial^2\Psi}{\partial x^2}-\frac{\partial^2\Psi^*}{\partial x^2}\Psi
+\end{align*}
+$$
+The formula could be written as 
+$$
+\frac{\partial}{\partial x}\left(\frac{i\hbar}{2m}\left(\Psi^*\frac{\partial\Psi}{\partial x}-\frac{\partial\Psi^*}{\partial x}\Psi\right)\right)
+$$
+
+Therefore, 
+$$
+\begin{align*}
+\frac d{dt}\int^{+\infty}_{-\infty} {|\Psi(x,t)|}^2 dx &= \int^{+\infty}_{-\infty} \frac{\partial}{\partial t}{|\Psi(x,t)|}^2 dx \\
+&= \int^{+\infty}_{-\infty} \frac{\partial}{\partial x}\left(\frac{i\hbar}{2m}\left(\Psi^*\frac{\partial\Psi}{\partial x}-\frac{\partial\Psi^*}{\partial x}\Psi\right)\right) dx \\
+&= \left. \frac{i\hbar}{2m}\left(\Psi^*\frac{\partial\Psi}{\partial x}-\frac{\partial\Psi^*}{\partial x}\Psi\right)\right|^{+\infty}_{-\infty}
+\end{align*}
+$$
+
+For $\Psi(x,t)$ to be normalizable, it must go to zero as $x$ goes to $\pm\infty$. Therefore, 
+$$
+\frac d{dt}\int^{+\infty}_{-\infty} {|\Psi(x,t)|}^2 dx = 0
+$$
+$$
+\int^{+\infty}_{-\infty} {|\Psi(x,t)|}^2 dx = \text{const. over $t$}
+$$
+</Proof>
+
+## 1.5 Momentum
+**Expectation Value** - The expectation value isn't the expected value of the position if you measure the same particle over and over. It's rather the average of measurements on an *ensemble* if identically-prepared states.
+$$
+\langle x\rangle = \int^{+\infty}_{-\infty}x|\Psi(x,t)|^2 dx
+$$
+**Expectation value of velocity = Time derivative of expectation value of position**
+$$
+\langle v \rangle = \frac{d\langle x\rangle}{dt}
+$$
+**Momentum**
+$$
+\langle p \rangle = m\frac{d\langle x \rangle}{dt} = -i\hbar \int \left(\Psi^*\frac{\partial\Psi}{\partial x}\right)dx
+$$
+
+<Proof>
+$$
+\begin{align*}
+\frac{d\langle x \rangle}{dt} &= \int x\frac{\partial}{\partial t}|\Psi|^2 dx \\
+&=\frac{i\hbar}{2m}\int x\frac{\partial}{\partial x}\left(\Psi^*\frac{\partial\Psi}{\partial x}-\frac{\partial\Psi^*}{\partial x}\Psi\right)dx \\
+&=\frac{i\hbar}{2m}\left. x\left(\Psi^*\frac{\partial\Psi}{\partial x} -\frac{\partial\Psi^*}{\partial x}\Psi \right) \right|^{\infty}_{-\infty} - \frac{i\hbar}{2m}\int^{\infty}_{-\infty}\left(\Psi^*\frac{\partial\Psi}{\partial x}-\frac{\partial\Psi^*}{\partial x}\Psi\right)dx \\
+&=- \frac{i\hbar}{2m}\int^{\infty}_{-\infty}\left(\Psi^*\frac{\partial\Psi}{\partial x}-\frac{\partial\Psi^*}{\partial x}\Psi\right)dx \\
+&=-\frac{i\hbar}{2m}\left(\int^{\infty}_{-\infty}\Psi^*\frac{\partial \Psi}{\partial x} dx - \left. \Psi^*\Psi \right|^{\infty}_{-\infty} + \int^{\infty}_{-\infty}\Psi^*\frac{\partial\Psi}{\partial x}dx  \right) \\
+&= -\frac{i\hbar}{m}\int^{\infty}_{-\infty}\Psi^*\frac{\partial\Psi}{\partial x}dx
+\end{align*}
+$$
+$$
+\langle p \rangle = m\frac{d\langle x \rangle}{dt} = -i\hbar \int \left(\Psi^*\frac{\partial\Psi}{\partial x}\right)dx
+$$
+</Proof>
+
+**Operators**  
+Position
+$$
+\langle x \rangle = \int \Psi^*[x]\Psi dx
+$$
+Momentum
+$$
+\langle p \rangle = \int \Psi^*[i\hbar(\partial / \partial x)]\Psi dx
+$$
+Arbitrary Quantity
+$$
+\langle Q(x,p)\rangle = \int\Psi^*[Q(x, i\hbar(\partial / \partial x))]\Psi dx
+$$
+
+**Ehrenfest's Theorem**
+$$
+\langle p\rangle = m\frac{d\langle x\rangle}{dt}, \qquad
+\frac{d\langle p\rangle}{dt} = \left\langle -\frac{\partial V}{\partial x}\right\rangle
+$$
+
+## 1.6 The Uncertainty Principle
+**De Broglie Formula**
+$$
+p = \frac h\lambda = \frac {2\pi\hbar}{\lambda}
+$$
+
+**Uncertainty Principle**
+$$
+\sigma_x\sigma_p\geq\frac \hbar2
+$$
